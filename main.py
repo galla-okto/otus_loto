@@ -24,6 +24,17 @@ def find_free_place(lst_tmp):
 
     return index_random
 
+def fill_list_numbers():
+    lst_tmp = [0 for _ in range(1, 10)]
+    for times in range(1, 6):
+        number = generate_number_not_used()
+        index_random = find_free_place(lst_tmp)
+
+        lst_tmp.pop(index_random - 1)
+        lst_tmp.insert(index_random - 1, number)
+
+    return lst_tmp
+
 
 class Player:
     def __init__(self, index, is_man=True):
@@ -40,17 +51,7 @@ class Card:
 
         lst = []
         for row in range(1, 4):
-            lst_tmp = [0 for _ in range(1, 10)]
-            for times in range(1, 6):
-
-                number = generate_number_not_used()
-
-                index_random = find_free_place(lst_tmp)
-
-                lst_tmp.pop(index_random - 1)
-                lst_tmp.insert(index_random - 1, number)
-
-            lst.append(lst_tmp)
+            lst.append(fill_list_numbers())
 
         self.lst = lst
 
