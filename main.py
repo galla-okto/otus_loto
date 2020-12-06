@@ -4,6 +4,7 @@ cards_numbers = [item for item in range(1, 91)]
 cards_numbers_used = []
 kegs_numbers_used = []
 
+
 def generate_number_not_used(list_numbers, list_numbers_used):
     is_used = False
     while not is_used:
@@ -15,6 +16,7 @@ def generate_number_not_used(list_numbers, list_numbers_used):
 
     return number
 
+
 def find_free_place(lst_tmp):
     is_selected = False
     while not is_selected:
@@ -23,6 +25,7 @@ def find_free_place(lst_tmp):
             is_selected = True
 
     return index_random
+
 
 def fill_list_numbers():
     lst_tmp = [0 for _ in range(1, 10)]
@@ -93,13 +96,15 @@ class Keg:
     def generate_number(self):
         self.number = generate_number_not_used(cards_numbers, kegs_numbers_used)
 
-def generate_players_cards(number_players, list_players_cards, pc_man = True):
+
+def generate_players_cards(number_players, list_players_cards, pc_man=True):
     index_start = len(list_players_cards)
     if number_players != 0:
         for item in range(1, number_players + 1):
             player = Player(index_start + item, pc_man)
             card = Card()
             list_players_cards.append((player, card))
+
 
 if __name__ == '__main__':
     number_player_pc = int(input('Enter quantity of computer players: '))
