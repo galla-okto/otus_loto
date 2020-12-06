@@ -4,14 +4,14 @@ cards_numbers = [item for item in range(1, 91)]
 cards_numbers_used = []
 kegs_numbers_used = []
 
-def generate_number_not_used():
+def generate_number_not_used(list_numbers, list_numbers_used):
     is_used = False
     while not is_used:
-        number = random.choice(cards_numbers)
-        if number not in cards_numbers_used:
+        number = random.choice(list_numbers)
+        if number not in list_numbers_used:
             is_used = True
 
-    cards_numbers_used.append(number)
+    list_numbers_used.append(number)
 
     return number
 
@@ -27,7 +27,7 @@ def find_free_place(lst_tmp):
 def fill_list_numbers():
     lst_tmp = [0 for _ in range(1, 10)]
     for times in range(1, 6):
-        number = generate_number_not_used()
+        number = generate_number_not_used(cards_numbers, cards_numbers_used)
         index_random = find_free_place(lst_tmp)
 
         lst_tmp.pop(index_random - 1)
@@ -91,14 +91,7 @@ class Keg:
         self.number = 0
 
     def generate_number(self):
-        is_used = False
-        while not is_used:
-            number = random.choice(cards_numbers)
-            if number not in kegs_numbers_used:
-                is_used = True
-
-        kegs_numbers_used.append(number)
-        self.number = number
+        self.number = generate_number_not_used(cards_numbers, kegs_numbers_used)
 
 def generate_players_cards(number_players, list_players_cards, pc_man = True):
     index_start = len(list_players_cards)
