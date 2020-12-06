@@ -1,12 +1,15 @@
 from pytest import fixture
 
+
 @fixture(scope='class')
 def list_numbers90():
     return [item for item in range(1, 91)]
 
+
 @fixture(scope='class')
 def list_numbers_used():
     return [item for item in range(21, 91)]
+
 
 @fixture(scope='class')
 def list_numbers10():
