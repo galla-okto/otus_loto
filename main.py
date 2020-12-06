@@ -4,6 +4,26 @@ cards_numbers = [item for item in range(1, 91)]
 cards_numbers_used = []
 kegs_numbers_used = []
 
+def generate_number_not_used():
+    is_used = False
+    while not is_used:
+        number = random.choice(cards_numbers)
+        if number not in cards_numbers_used:
+            is_used = True
+
+    cards_numbers_used.append(number)
+
+    return number
+
+def find_free_place(lst_tmp):
+    is_selected = False
+    while not is_selected:
+        index_random = random.choice(range(1, 10))
+        if lst_tmp[index_random - 1] == 0:
+            is_selected = True
+
+    return index_random
+
 
 class Player:
     def __init__(self, index, is_man=True):
@@ -22,19 +42,10 @@ class Card:
         for row in range(1, 4):
             lst_tmp = [0 for _ in range(1, 10)]
             for times in range(1, 6):
-                is_used = False
-                while not is_used:
-                    number = random.choice(cards_numbers)
-                    if number not in cards_numbers_used:
-                        is_used = True
 
-                cards_numbers_used.append(number)
+                number = generate_number_not_used()
 
-                is_selected = False
-                while not is_selected:
-                    index_random = random.choice(range(1, 10))
-                    if lst_tmp[index_random - 1] == 0:
-                        is_selected = True
+                index_random = find_free_place(lst_tmp)
 
                 lst_tmp.pop(index_random - 1)
                 lst_tmp.insert(index_random - 1, number)
@@ -121,29 +132,32 @@ if __name__ == '__main__':
             print(card_tmp)
             print('---------------------------------')
 
-        for player_tmp in list_players_cards:
-            if player_tmp[0].is_man:
-                answer = input(f'Question for player Nr {player_tmp[0].index}: Cross out the number? (y/n)')
+        for player_card_tmp in list_players_cards:
+            player_tmp = player_card_tmp[0]
+            card_tmp = player_card_tmp[1]
+
+            if player_tmp.is_man:
+                answer = input(f'Question for player Nr {player_tmp.index}: Cross out the number? (y/n)')
 
                 if answer == 'y':
-                    if player_tmp[1].search_number(number_tmp):
-                        player_tmp[1].search_and_delete_number(number_tmp)
+                    if card_tmp.search_number(number_tmp):
+                        card_tmp.search_and_delete_number(number_tmp)
                     else:
-                        player_tmp[0].loser = True
+                        player_tmp.loser = True
                         game_is_over = True
-                        print('Lose player Nr ', player_tmp[0].index)
+                        print('Lose player Nr ', player_tmp.index)
                         break
                 else:
-                    if player_tmp[1].search_number(number_tmp):
-                        player_tmp[0].loser = True
+                    if card_tmp.search_number(number_tmp):
+                        player_tmp.loser = True
                         game_is_over = True
-                        print('Lose player Nr ', player_tmp[0].index)
+                        print('Lose player Nr ', player_tmp.index)
                         break
             else:
-                player_tmp[1].search_and_delete_number(number_tmp)
+                card_tmp.search_and_delete_number(number_tmp)
 
-            if player_tmp[1].check_card():
-                player_tmp[0].winner = True
+            if card_tmp.check_card():
+                player_tmp.winner = True
                 game_is_over = True
-                print('Win player Nr ', player_tmp[0].index)
+                print('Win player Nr ', player_tmp.index)
                 break
