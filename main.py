@@ -43,6 +43,12 @@ class Card:
 
         self.lst = lst
 
+    def __str__(self):
+        for lst_tmp in self.lst:
+            print(lst_tmp)
+
+        return ''
+
     def search_number(self, number_for_search):
         for lst_temp in self.lst:
             if number_for_search in lst_temp:
@@ -82,6 +88,13 @@ class Keg:
         kegs_numbers_used.append(number)
         self.number = number
 
+def generate_players_cards(number_players, list_players_cards, pc_man = True):
+    index_start = len(list_players_cards)
+    if number_players != 0:
+        for item in range(1, number_players + 1):
+            player = Player(index_start + item, pc_man)
+            card = Card()
+            list_players_cards.append((player, card))
 
 if __name__ == '__main__':
     number_player_pc = int(input('Enter quantity of computer players: '))
@@ -89,17 +102,8 @@ if __name__ == '__main__':
 
     list_players_cards = []
 
-    if number_player_pc != 0:
-        for item in range(1, number_player_pc + 1):
-            player = Player(item, False)
-            card = Card()
-            list_players_cards.append((player, card))
-
-    if number_player_man != 0:
-        for item in range(1, number_player_man + 1):
-            player = Player(number_player_pc + item)
-            card = Card()
-            list_players_cards.append((player, card))
+    generate_players_cards(number_player_pc, list_players_cards, False)
+    generate_players_cards(number_player_man, list_players_cards)
 
     keg = Keg()
 
@@ -109,17 +113,13 @@ if __name__ == '__main__':
         number_tmp = keg.number
         print('New keg = ', number_tmp, ' (left ', (90 - len(kegs_numbers_used)), ')')
 
-        for player_tmp in list_players_cards:
-            if player_tmp[0].is_man:
-                print('Card of player Nr', player_tmp[0].index)
-                for lst1 in player_tmp[1].lst:
-                    print(lst1)
-                print('---------------------------------')
-            else:
-                print('Card of computer Nr', player_tmp[0].index)
-                for lst1 in player_tmp[1].lst:
-                    print(lst1)
-                print('---------------------------------')
+        for player_card_tmp in list_players_cards:
+            player_tmp = player_card_tmp[0]
+            card_tmp = player_card_tmp[1]
+
+            print('Card of ', 'man' if player_tmp.is_man else 'computer',  ' Nr', player_tmp.index)
+            print(card_tmp)
+            print('---------------------------------')
 
         for player_tmp in list_players_cards:
             if player_tmp[0].is_man:
